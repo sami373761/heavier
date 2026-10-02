@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#120a0c" />
+    <meta
+      name="description"
+      content="Two objects, one question: which one is heavier? Guess your way through eight rounds."
+    />
+    <title>Heavier</title>
+    <!-- The tab icon is the project's own mark, referenced relatively so Vite
+         bundles and fingerprints it on build; `svg_files/` itself stays
+         untouched. -->
+    <link rel="icon" type="image/svg+xml" href="./svg_files/weight-star-red.svg" />
+
+    <!-- ===================================================================
+         Sharing and indexing.
+
+         PLACEHOLDER DOMAIN: every absolute URL below is
+         `https://heavier.example.com`, which is a reserved example address and
+         is deliberately not a real site. Replace it with the real origin at
+         deploy time — it is the only thing in this file that has to change,
+         and DEPLOY.md says so too.
+
+         Why absolute at all: hreflang is not reliably resolved from a relative
+         href, so the language map has to name a domain. In a real browser
+         `applyDocumentHead` overwrites the canonical and `og:url` with the
+         origin actually being served, so a visitor's shared link is right even
+         while the placeholder is still here. A social scraper does not run
+         JavaScript, which is exactly why the rest of this block is static.
+
+         The language map: English is the bare root and the x-default, each
+         other locale lives under its own BCP 47 segment. `languageRoute.ts`
+         builds the same paths at runtime from `LOCALE_TAGS`; keep the two
+         lists in step if a sixth language is ever added.
+         =================================================================== -->
+    <link rel="canonical" href="https://heavier.example.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://heavier.example.com/" />
+    <link rel="alternate" hreflang="en" href="https://heavier.example.com/" />
+    <link rel="alternate" hreflang="es" href="https://heavier.example.com/es/" />
+    <link rel="alternate" hreflang="tr" href="https://heavier.example.com/tr/" />
+    <link rel="alternate" hreflang="fr" href="https://heavier.example.com/fr/" />
+    <link rel="alternate" hreflang="de" href="https://heavier.example.com/de/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Heavier" />
+    <meta property="og:title" content="Heavier" />
+    <meta
+      property="og:description"
+      content="Two objects, one question: which one is heavier? Guess your way through eight rounds."
+    />
+    <meta property="og:url" content="https://heavier.example.com/" />
+    <!-- Served from `public/`, so the URL is stable rather than fingerprinted:
+         a social card must keep resolving after every deploy. -->
+    <meta property="og:image" content="https://heavier.example.com/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Heavier — which one is heavier?" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="de_DE" />
+
+    <!-- PLACEHOLDER HANDLE: there is no account yet. `@heaviergame` is a stand-in
+         for whatever is registered; an unclaimed handle costs nothing but the
+         attribution line on the card. -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@heaviergame" />
+    <meta name="twitter:creator" content="@heaviergame" />
+    <meta name="twitter:title" content="Heavier" />
+    <meta
+      name="twitter:description"
+      content="Two objects, one question: which one is heavier? Guess your way through eight rounds."
+    />
+    <meta name="twitter:image" content="https://heavier.example.com/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Heavier — which one is heavier?" />
+    <!-- No font links: both faces are self-hosted and declared in
+         `src/styles/global.css`, which Vite bundles. Nothing here loads from a
+         third-party origin. -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

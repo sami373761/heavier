@@ -1,0 +1,50 @@
+[
+  {
+    "key": "animal",
+    "folder": "animals_svg",
+    "names": {
+      "eng": "Animals",
+      "esp": "Animales",
+      "tur": "Hayvanlar",
+      "fra": "Animaux",
+      "deu": "Tiere"
+    },
+    "builtIn": true
+  },
+  {
+    "key": "food",
+    "folder": "foods_svg",
+    "names": {
+      "eng": "Foods",
+      "esp": "Alimentos",
+      "tur": "Yiyecekler",
+      "fra": "Aliments",
+      "deu": "Lebensmittel"
+    },
+    "builtIn": true
+  },
+  {
+    "key": "stuff",
+    "folder": "stuff_svg",
+    "names": {
+      "eng": "Objects",
+      "esp": "Objetos",
+      "tur": "Eşyalar",
+      "fra": "Objets",
+      "deu": "Gegenstände"
+    },
+    "builtIn": true
+  },
+  {
+    "key": "vehicle",
+    "folder": "vehicle_svg",
+    "names": {
+      "eng": "Vehicles",
+      "esp": "Vehículos",
+      "tur": "Araçlar",
+      "fra": "Véhicules",
+      "deu": "Fahrzeuge"
+    },
+    "builtIn": true
+  }
+]

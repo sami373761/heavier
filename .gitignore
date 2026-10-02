@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+*.tsbuildinfo
+
+# Admin-panel data. `data/categories.json` is deliberately NOT ignored: the app
+# imports it at build time, so a checkout without it cannot build. The dispute
+# log and the pre-write backups are runtime data and stay out.
+data/disputes.json
+data/backups/
+
+# `admin-credentials.json` holds only a SHA-256 verifier, no password, and is
+# tracked on purpose — the app imports it.

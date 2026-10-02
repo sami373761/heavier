@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+
+    // The server and its scripts are plain JavaScript with JSDoc types. Checking
+    // them here is what keeps `npm run typecheck` the project's full automated
+    // gate now that there is backend code — otherwise the only untested part of
+    // the app would be the part that writes to disk.
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["vite.config.ts", "server/**/*.mjs", "scripts/**/*.mjs"]
+}

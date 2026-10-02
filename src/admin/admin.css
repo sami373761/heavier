@@ -1,0 +1,439 @@
+/* ==========================================================================
+   Heavier — admin panel
+   Layered on top of the game's stylesheet purely for its token block: every
+   colour below resolves from the same `--ink-*`, `--text-*` and brand
+   variables the game uses, so the panel cannot drift away from the brand and
+   no colour is defined twice. Class names are all `admin-`-prefixed, so
+   nothing here can reach into the game's markup.
+
+   Labelled surfaces take the pink end of the palette — it is the only one of
+   the three reds that holds legible ink — and the crimsons stay on borders and
+   glows, exactly as in the game.
+   ========================================================================== */
+
+.admin {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink-900);
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+  flex-wrap: wrap;
+  padding: var(--gap-md) var(--gap-lg);
+  border-bottom: 1px solid var(--line);
+  background: var(--ink-850);
+}
+
+.admin-nav {
+  display: flex;
+  gap: var(--gap-xs);
+  flex-wrap: wrap;
+  margin-inline-end: auto;
+}
+
+.admin-nav__tab {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 160ms var(--ease), background-color 160ms var(--ease);
+}
+
+.admin-nav__tab:hover {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.admin-nav__tab[aria-current='page'] {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.admin-main {
+  flex: 1;
+  width: min(1100px, 100%);
+  margin-inline: auto;
+  padding: var(--gap-lg);
+}
+
+/* ------------------------------------------------------------------ login */
+
+.admin-login {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--gap-lg);
+  background: var(--ink-900);
+}
+
+.admin-login__card {
+  width: min(380px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  padding: var(--gap-lg);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--ink-850);
+  box-shadow: var(--shadow-lift);
+}
+
+.admin-login__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-banner {
+  margin: 0;
+  padding: var(--gap-sm) var(--gap-md);
+  background: var(--wrong-soft);
+  border-bottom: 1px solid var(--wrong);
+  color: var(--text);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------- sections */
+
+.admin-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
+
+.admin-section__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-section__subtitle {
+  margin: var(--gap-md) 0 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.admin-note {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.admin-error,
+.admin-ok {
+  margin: 0;
+  padding: var(--gap-sm) var(--gap-md);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+}
+
+.admin-error {
+  background: var(--wrong-soft);
+  border: 1px solid var(--wrong);
+  color: var(--text);
+}
+
+.admin-ok {
+  background: var(--correct-soft);
+  border: 1px solid var(--correct);
+  color: var(--text);
+}
+
+/* ------------------------------------------------------------------ forms */
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  align-items: start;
+}
+
+.admin-form--nested {
+  margin-top: var(--gap-md);
+  padding-top: var(--gap-md);
+  border-top: 1px solid var(--line);
+  width: 100%;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--gap-md);
+  width: 100%;
+}
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xs);
+  min-width: 0;
+}
+
+.admin-field--inline {
+  max-width: 340px;
+}
+
+.admin-field__label {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.admin-field__input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--ink-800);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.admin-field__input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.admin-field__input--file {
+  padding: 8px 10px;
+  color: var(--text-dim);
+}
+
+.admin-field__static {
+  padding: 10px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  word-break: break-all;
+}
+
+.admin-field__hint {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  line-height: 1.45;
+}
+
+.admin-fieldset {
+  width: 100%;
+  margin: 0;
+  padding: var(--gap-md);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.admin-fieldset__legend {
+  padding-inline: var(--gap-xs);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+.admin-button {
+  appearance: none;
+  padding: 10px 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--ink-700);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
+}
+
+.admin-button:hover:not(:disabled) {
+  background: var(--ink-600);
+}
+
+.admin-button--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 500;
+}
+
+.admin-button--primary:hover:not(:disabled) {
+  background: var(--accent-hot);
+  border-color: var(--accent-hot);
+}
+
+.admin-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ------------------------------------------------------- lists and tables */
+
+.admin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.admin-list__item {
+  padding: var(--gap-md);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--ink-850);
+}
+
+.admin-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+}
+
+.admin-row__art {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex: none;
+  /* The supplied artwork is solid black; the game recolours it the same way. */
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+.admin-row__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  margin-inline-end: auto;
+}
+
+.admin-row__name {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.admin-row__meta {
+  color: var(--text-faint);
+  font-size: 0.82rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 10px 12px;
+  text-align: start;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+}
+
+.admin-table th {
+  color: var(--text-faint);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-table__number {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-table code {
+  color: var(--text-dim);
+  font-size: 0.85em;
+}
+
+.admin-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A table is the one thing here that can outgrow a phone; it scrolls inside
+   its own box rather than making the page scroll sideways. */
+@media (max-width: 640px) {
+  .admin-main {
+    padding: var(--gap-md);
+  }
+
+  .admin-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* ------------------------------------------------------- checkbox controls */
+
+.admin-check {
+  display: flex;
+  align-items: start;
+  gap: var(--gap-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.admin-check input[type='checkbox'] {
+  /* Big enough to be a comfortable target, and tinted so a checked box reads as
+     the brand rather than as the browser default blue. */
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  flex: none;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.admin-check input[type='checkbox']:disabled {
+  cursor: progress;
+  opacity: 0.55;
+}
+
+.admin-check > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-toggle__error {
+  color: var(--wrong);
+  font-size: 0.78rem;
+}

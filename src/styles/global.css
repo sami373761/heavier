@@ -1,0 +1,2914 @@
+/* Both faces are self-hosted from `src/assets/fonts/`: nothing in this project
+   fetches a font from a third party, so the site renders identically offline
+   and on first paint there is no CDN round trip to wait for. Vite fingerprints
+   every URL below at build time.
+
+   Display face: Audex, SIL OFL 1.1 — see Audex-OFL.txt beside the file. */
+@font-face {
+  font-family: 'Audex';
+  src: url('../assets/fonts/Audex-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Body face: Space Grotesk, SIL OFL 1.1, variable 300–700 — the same files
+   Google Fonts was serving, downloaded and kept here instead. Two subsets, with
+   the `unicode-range` declarations they shipped with, so a Latin-only page
+   never downloads the extended one: `latin` covers English, Spanish, French,
+   German and Turkish dotless ı, while `latin-ext` carries the rest of Turkish
+   (İ, ş, ğ). The Vietnamese subset is not included — no locale here needs it. */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../assets/fonts/SpaceGrotesk-latin.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../assets/fonts/SpaceGrotesk-latin-ext.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ==========================================================================
+   Heavier — design tokens
+   A pitch-black stage with an Apple-dark neutral ladder on top of it, and one
+   brand ramp — blue → violet → magenta → orange — carrying every accent. The
+   ramp is the one the bento's contact card already wore; it is defined here
+   now so the whole site speaks it, and the bento reads it back from these
+   tokens instead of keeping a private copy.
+
+   Division of labour: the ramp carries structure, edges, glows and the
+   wordmark, and whenever type sits *on* it the ink is near-black — every stop
+   clears 5.4:1 against `--accent-ink`, where white would manage 3.3 at best.
+   Green and orange stay reserved strictly for results. Every colour in the app
+   resolves from this block.
+   ========================================================================== */
+
+:root {
+  /* The stage is pure black, and everything that sits on it is one of Apple's
+     own dark surface greys. #1c1c1e is the same surface the bento measured out
+     of the reference screenshot, so cards, controls and bento tiles are one
+     material rather than three. */
+  --ink-900: #000000;
+  --ink-850: #1c1c1e;
+  --ink-800: #2c2c2e;
+  --ink-700: #3a3a3c;
+  --ink-600: #48484a;
+
+  /* Neutral hairlines: on black, a tinted divider reads as a colour decision
+     rather than as an edge. */
+  --line: rgb(255 255 255 / 10%);
+  --line-strong: rgb(255 255 255 / 22%);
+
+  --text: #f5f5f7;
+  --text-dim: #a1a1a6;
+  --text-faint: #86868b;
+
+  /* The brand ramp, sampled from the contact card's ring: blue through violet
+     and magenta to orange. Each stop is a token because single-colour uses
+     (a focus ring, a glow, a hover edge) need one hue, not a gradient. */
+  --spectrum-blue: #3f8ff5;
+  --spectrum-indigo: #6f77f4;
+  --spectrum-violet: #9a6bf2;
+  --spectrum-magenta: #bb60c4;
+  --spectrum-rose: #cf5690;
+  --spectrum-coral: #dc5367;
+  --spectrum-ember: #dd6541;
+  --spectrum-orange: #da7a30;
+
+  /* The full ramp, left to right. `--accent-gradient` is the same run on the
+     diagonal, which is what pills, rings and the wordmark use. */
+  --spectrum: linear-gradient(
+    90deg,
+    var(--spectrum-blue) 0%,
+    var(--spectrum-indigo) 25%,
+    var(--spectrum-violet) 38%,
+    var(--spectrum-magenta) 54%,
+    var(--spectrum-rose) 66%,
+    var(--spectrum-coral) 78%,
+    var(--spectrum-ember) 89%,
+    var(--spectrum-orange) 100%
+  );
+  --accent-gradient: linear-gradient(
+    135deg,
+    var(--spectrum-blue) 0%,
+    var(--spectrum-violet) 34%,
+    var(--spectrum-magenta) 58%,
+    var(--spectrum-coral) 80%,
+    var(--spectrum-orange) 100%
+  );
+
+  /* Two gradients that are not cut out of the ramp. Both came in with the
+     bento's icons and have since been given jobs of their own, so they live
+     here rather than inside one component: `--grad-warm` is the Buy Me a
+     Coffee cup's gradient and now also carries the wordmark, the primary CTA,
+     the unit pill, the categories eyebrow and the default button's hover
+     edge; `--grad-green` is the FAQ card's and now carries the whole questions
+     section. Each is kept to the stop values in its own icon (`CupIcon`,
+     `FaqIcon`) so the two copies cannot drift apart — an SVG gradient cannot
+     read a CSS one, which is the only reason there are two.
+
+     The ramp still owns everything else: the category bands and their balance
+     pivots, the contact ring, and the focus colour. */
+  --grad-warm: linear-gradient(135deg, #ef8441 0%, #f5a341 55%, #fbc247 100%);
+  --grad-green: linear-gradient(90deg, #5fc78a 0%, #7ccb62 50%, #9cdc4a 100%);
+  /* The green at its most legible end, for type and edges that need one hue. */
+  --green-lift: #9cdc4a;
+  /* The same for the warm ramp: its middle stop, which is the one that stays
+     readable as type on the dark stage. Anything in the game flow that needs
+     one warm hue rather than the gradient reads this. */
+  --warm-lift: #f5a341;
+
+  --accent: var(--spectrum-violet);
+  --accent-hot: #ab87f7;
+  --accent-ink: #0b0b0d;
+  --accent-soft: rgb(154 107 242 / 16%);
+  /* Ink for text on a light *non-accent* fill — the green "heavier" tag. */
+  --ink-on-bright: #0b0b0d;
+
+  /* Results keep their own meaning and now keep their own hue too: with red
+     promoted to the brand colour, "wrong" is pulled towards orange so it can
+     never be mistaken for a call to action, and the green is cooled to sit
+     opposite the pink. */
+  --correct: #3ddc97;
+  --correct-soft: rgb(61 220 151 / 12%);
+  --wrong: #ff7043;
+  --wrong-soft: rgb(255 112 67 / 14%);
+  /* The same two hues washed across a card instead of filling it flat: the
+     lighter end of the hue at the top-left corner falling to almost nothing at
+     the bottom-right. Nothing here introduces a second colour — a card that
+     reads "wrong" is orange from corner to corner, just not evenly. */
+  --correct-grad: linear-gradient(145deg, rgb(110 240 184 / 22%) 0%, rgb(61 220 151 / 6%) 100%);
+  --wrong-grad: linear-gradient(145deg, rgb(255 150 116 / 22%) 0%, rgb(255 112 67 / 6%) 100%);
+
+  /* Guess the Weight — accuracy tiers. Exact values as specified for the mode,
+     kept as tokens like every other colour in the app. Each also carries the
+     ink that stays AA-readable printed directly on its own solid fill. */
+  --tier-perfect: #34b3e4;
+  --tier-very-good: #077b39;
+  --tier-good: #e2ba50;
+  --tier-close: #e07c4c;
+  --tier-far: #d92e34;
+  --tier-perfect-ink: var(--ink-on-bright);
+  --tier-very-good-ink: var(--text);
+  --tier-good-ink: var(--ink-on-bright);
+  --tier-close-ink: var(--ink-on-bright);
+  --tier-far-ink: var(--text);
+
+  /* Each tier also carries a *lift*: the readable end of its own hue, for type
+     and edges that sit on the dark card rather than on the solid fill. The
+     tier colours above were chosen to be printed on — `--tier-very-good`
+     (#077b39) is a deep green that all but disappears as text on #1c1c1e — so
+     a label takes the lift and only the filled pill takes the base. */
+  --tier-perfect-lift: #6fd3f5;
+  --tier-very-good-lift: #35c06f;
+  --tier-good-lift: #f0d487;
+  --tier-close-lift: #f2a476;
+  --tier-far-lift: #f4696d;
+
+  /* And a gradient built from the two, lift to base, which is what the result
+     cards wear instead of a flat wash. Every stop is the tier's own hue: the
+     "far" card is red at both ends, lighter at the top-left and nearly gone at
+     the bottom-right. Never mix a second colour in here — the hue is the
+     meaning. */
+  --tier-perfect-grad: linear-gradient(145deg, rgb(111 211 245 / 24%) 0%, rgb(52 179 228 / 6%) 100%);
+  --tier-very-good-grad: linear-gradient(145deg, rgb(53 192 111 / 24%) 0%, rgb(7 123 57 / 8%) 100%);
+  --tier-good-grad: linear-gradient(145deg, rgb(240 212 135 / 22%) 0%, rgb(226 186 80 / 6%) 100%);
+  --tier-close-grad: linear-gradient(145deg, rgb(242 164 118 / 23%) 0%, rgb(224 124 76 / 6%) 100%);
+  --tier-far-grad: linear-gradient(145deg, rgb(244 105 109 / 24%) 0%, rgb(217 46 52 / 7%) 100%);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  --gap-xs: 6px;
+  --gap-sm: 10px;
+  --gap-md: 18px;
+  --gap-lg: 28px;
+  --gap-xl: 44px;
+
+  --font-display: 'Audex', 'Space Grotesk', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, Inter, 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Inter,
+    'Helvetica Neue', Arial, sans-serif;
+  /* Default text stack; headings, titles and numbers opt into --font-display. */
+  --font: var(--font-body);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* The reveal curve is slower out of the gate and long on the tail, which is
+     what makes a scrolled-in section read as settling rather than snapping. */
+  --reveal-ease: cubic-bezier(0.16, 0.84, 0.44, 1);
+  --shadow-lift: 0 14px 30px -18px rgb(0 0 0 / 90%);
+  --shadow-accent: 0 16px 38px -16px rgb(239 132 65 / 50%);
+
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   Reset & base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font);
+  color: var(--text);
+  /* Pitch black, and nothing on top of it. The old crimson wash and dot grid
+     are gone: on a page whose surfaces are #1c1c1e, an unbroken black ground is
+     what makes them read as panels floating above it. */
+  background-color: var(--ink-900);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+ol,
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-hot);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   Gradient edge
+   A one-pixel hairline of the brand ramp, painted inside an element's own
+   border box: a gradient-filled rectangle with its middle masked out, which is
+   the only way CSS can put a gradient on a border. It is a pseudo-element
+   rather than a real border so lighting it up moves nothing — the hairline
+   underneath keeps the box exactly the size it was.
+
+   Every surface that lights up on hover, focus or open state shares this one
+   block and overrides only its trigger (and, for the language select, its
+   ramp).
+   ========================================================================== */
+
+.select::after,
+.button--ghost::after,
+.category-card::before,
+.faq__item::after,
+.card::after,
+.guess__input-group::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background-image: var(--accent-gradient);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+  pointer-events: none;
+}
+
+/* Display face: headings, titles, and anything numeric (counters, weights,
+   scores). Everything else stays on the body face inherited from `body`. */
+.logo__text,
+.home__headline,
+.categories__title,
+.category-card__name,
+.bento-card__headline,
+.faq__title,
+.faq__question,
+.game__prompt,
+.game__round-count,
+.game__round-total,
+.arena__vs,
+.card__name,
+.card__weight-value,
+.card__weight-unit,
+.score__headline,
+.score__fraction,
+.score__percent,
+.notice__title {
+  font-family: var(--font-display);
+}
+
+/* ==========================================================================
+   App shell
+   ========================================================================== */
+
+.app {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-md);
+  padding: clamp(14px, 2.4vw, 22px) clamp(16px, 4vw, 40px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+}
+
+/* Screens are centred horizontally and vertically; each one sets its own
+   `width: 100%` + `max-width` so it fills narrow viewports and caps on wide
+   ones. */
+.site-main {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  width: 100%;
+  min-width: 0;
+  padding: clamp(20px, 4vw, 48px) clamp(16px, 4vw, 40px);
+}
+
+/* ==========================================================================
+   Wordmark
+   ========================================================================== */
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.logo--button {
+  transition: opacity 0.18s var(--ease);
+}
+
+.logo--button:hover {
+  opacity: 0.75;
+}
+
+/* The weight-star mark from svg_files/weight-star.svg, inlined so its
+   currentColor fill picks up the header's own text colour (near-white). */
+.logo__mark {
+  width: 18px;
+  height: 20.7px;
+  flex: none;
+  color: var(--text);
+}
+
+.logo__text {
+  display: inline-flex;
+  gap: 0.35em;
+}
+
+/* The wordmark takes the warm ramp — the same gradient the coffee cup wears,
+   which is what makes it the site's signature rather than one card's. The
+   plain colour underneath is what shows if background-clip is unavailable. */
+.logo__accent {
+  color: #f5a341;
+  background: var(--grad-warm);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   Controls: unit segmented toggle + language select
+   ========================================================================== */
+
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+}
+
+.segmented__option {
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  border-radius: var(--radius-pill);
+  transition:
+    color 0.16s var(--ease),
+    background-color 0.16s var(--ease);
+}
+
+.segmented__option:hover {
+  color: var(--text-dim);
+}
+
+/* The active unit takes the warm ramp, like the wordmark and the primary CTA.
+   A pill this small could not show the full eight-stop ramp without smearing
+   it, and the warm run is only three stops wide. Near-black ink on it is
+   8.6:1 at the darkest stop, which is the whole reason this gradient can
+   carry a label at all. */
+.segmented__option[data-active] {
+  color: var(--accent-ink);
+  background-color: #f5a341;
+  background-image: var(--grad-warm);
+}
+
+.select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+}
+
+/* The language control's edge is the Buy Me a Coffee cup's own orange ramp,
+   not the brand ramp — it replaces the accent outline this control used to
+   take from `:focus-visible`, which on the old palette showed up as a pink
+   border the moment you clicked it. Drawn 2px outside the box so it reads as a
+   ring around the pill rather than a repaint of its border. */
+.select::after {
+  inset: -2px;
+  padding: 2px;
+  background-image: var(--grad-warm);
+}
+
+.select:hover::after {
+  opacity: 0.5;
+}
+
+/* `:focus` rather than `:focus-visible`: a <select> takes focus on click, and
+   the ring appearing then is exactly the behaviour being replaced. */
+.select:has(.select__input:focus)::after {
+  opacity: 1;
+}
+
+.select:has(.select__input:focus) .select__chevron {
+  color: #f5a341;
+}
+
+.select__input {
+  appearance: none;
+  padding: 8px 32px 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: color 0.16s var(--ease), border-color 0.16s var(--ease);
+}
+
+.select__input:hover {
+  color: var(--text);
+}
+
+/* The gradient ring above is this control's focus indicator, so the default
+   outline would only double it up. */
+.select__input:focus,
+.select__input:focus-visible {
+  color: var(--text);
+  outline: none;
+}
+
+.select__input option {
+  color: var(--text);
+  background: var(--ink-850);
+}
+
+.select__chevron {
+  position: absolute;
+  right: 12px;
+  width: 14px;
+  color: var(--text-faint);
+  transition: color 0.18s var(--ease);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-pill);
+  transition:
+    transform 0.14s var(--ease),
+    background-color 0.16s var(--ease),
+    box-shadow 0.2s var(--ease),
+    filter 0.18s var(--ease),
+    color 0.16s var(--ease),
+    border-color 0.16s var(--ease);
+}
+
+.button--large {
+  padding: 17px 42px;
+  font-size: 1rem;
+}
+
+/* An icon inside a button. Sized in `em` so it tracks the label rather than a
+   fixed pixel size, and `flex: none` keeps the 8px gap above from squeezing it.
+   It inherits `currentColor`, so it dims and brightens with the label.
+
+   1.1em is deliberately just under the label's own line box — 17.6px against
+   18.4px at the large size, which is the tightest any font in the stack gets —
+   so the icon never sets the button's height and an icon button stays exactly as
+   tall as one without. */
+.button svg {
+  width: 1.1em;
+  flex: none;
+}
+
+/* The warm ramp as a fill, with near-black ink on it — at 8.6:1 on the
+   darkest stop this is the one gradient in the palette that can hold a label
+   comfortably. The hover is a brightening and a 2px lift, not a colour change:
+   there is no second gradient to move to. */
+.button--primary {
+  color: var(--accent-ink);
+  background-color: #f5a341;
+  background-image: var(--grad-warm);
+  box-shadow: var(--shadow-accent);
+}
+
+.button--primary:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px -16px rgb(239 132 65 / 65%);
+}
+
+.button--primary:active {
+  transform: translateY(0);
+}
+
+/* The default button: the same #1c1c1e surface the cards and the bento tiles
+   are made of, with the bento's own secondary grey for the label. On hover it
+   lifts one step up the grey ladder and the gradient edge fades in. */
+.button--ghost {
+  position: relative;
+  color: var(--text-dim);
+  background-color: var(--ink-850);
+  border: 1px solid var(--line);
+}
+
+.button--ghost:hover {
+  color: var(--text);
+  background-color: var(--ink-800);
+  border-color: transparent;
+}
+
+/* The secondary CTA's hover edge answers the primary beside it in the same
+   warm ramp, rather than introducing a third colour between two buttons. */
+.button--ghost::after {
+  background-image: var(--grad-warm);
+}
+
+.button--ghost:hover::after {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Object rendering
+   The supplied SVGs are solid dark silhouettes; brightness(0) flattens them to
+   black and invert(1) lifts them to pure white, alpha edges intact. The source
+   files are never touched.
+   ========================================================================== */
+
+/* Sized by max-* against the stage's definite height, never by percentage
+   height — a percentage would not resolve against a content-sized row and the
+   artwork would render at its intrinsic 800px. */
+.object-image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  user-select: none;
+}
+
+.object-image--missing {
+  display: grid;
+  place-content: center;
+  gap: 4px;
+  aspect-ratio: 1;
+  max-height: 100%;
+  padding: 10px;
+  color: var(--text-faint);
+  font-size: 1.6rem;
+  font-weight: 700;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  filter: none;
+}
+
+.object-image__note {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Home
+   ========================================================================== */
+
+.home {
+  display: grid;
+  justify-items: center;
+  gap: var(--gap-md);
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+}
+
+.home__lead {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.home__headline {
+  font-size: clamp(2.1rem, 7vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.03;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.home__rule {
+  max-width: min(44ch, 100%);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  text-wrap: pretty;
+}
+
+.home .button {
+  margin-top: var(--gap-sm);
+}
+
+.home__modes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-sm);
+  margin-top: var(--gap-sm);
+}
+
+.home__modes .button {
+  margin-top: 0;
+}
+
+/* --- Balance scale --------------------------------------------------------
+   Every dimension is a custom property, so a size variant (`.scale--mini` on
+   the category cards) is a handful of value overrides rather than a second
+   implementation. The defaults below are the hero's own measurements.
+   -------------------------------------------------------------------------- */
+
+.scale {
+  --tilt: 0deg;
+  --scale-width: clamp(230px, 64vw, 330px);
+  --scale-height: clamp(150px, 30vw, 190px);
+  --scale-beam-top: clamp(34px, 8vw, 46px);
+  --scale-beam-height: 4px;
+  --scale-cord-height: clamp(22px, 5vw, 30px);
+  --scale-load-width: clamp(54px, 15vw, 74px);
+  --scale-load-height: clamp(44px, 12vw, 58px);
+  --scale-dish-width: clamp(62px, 17vw, 84px);
+  --scale-dish-height: 11px;
+  --scale-dish-border: 2px;
+  --scale-pivot-size: 14px;
+  --scale-column-top: clamp(40px, 8vw, 52px);
+  --scale-column-inset: clamp(48px, 9vw, 60px);
+  --scale-column-width: 4px;
+  --scale-base-width: clamp(80px, 22vw, 110px);
+  --scale-base-height: 4px;
+  --scale-gap-below: var(--gap-sm);
+
+  position: relative;
+  width: var(--scale-width);
+  height: var(--scale-height);
+  margin-bottom: var(--scale-gap-below);
+}
+
+.scale__beam {
+  position: absolute;
+  top: var(--scale-beam-top);
+  inset-inline: 0;
+  height: var(--scale-beam-height);
+  border-radius: var(--radius-pill);
+  background: var(--line-strong);
+  transform: rotate(var(--tilt));
+  transform-origin: center;
+}
+
+.scale__pan {
+  position: absolute;
+  top: 2px;
+  width: 0;
+  transform: rotate(calc(-1 * var(--tilt)));
+  transform-origin: 0 0;
+}
+
+.scale__pan--left {
+  left: 9%;
+}
+
+.scale__pan--right {
+  left: 91%;
+}
+
+.scale__pan-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+}
+
+.scale__cord {
+  width: 1px;
+  height: var(--scale-cord-height);
+  background: var(--line-strong);
+}
+
+.scale__load {
+  display: grid;
+  place-items: center;
+  width: var(--scale-load-width);
+  height: var(--scale-load-height);
+  padding-bottom: 2px;
+}
+
+.scale__dish {
+  width: var(--scale-dish-width);
+  height: var(--scale-dish-height);
+  border: var(--scale-dish-border) solid var(--line-strong);
+  border-top: none;
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+}
+
+.scale__pivot {
+  position: absolute;
+  top: calc(
+    var(--scale-beam-top) + (var(--scale-beam-height) - var(--scale-pivot-size)) / 2
+  );
+  left: 50%;
+  width: var(--scale-pivot-size);
+  height: var(--scale-pivot-size);
+  margin-left: calc(var(--scale-pivot-size) / -2);
+  border-radius: 50%;
+  /* The one spot of colour in an otherwise white-on-black illustration, so it
+     carries the brand ramp and a glow of its own hue. On a category card both
+     are re-pointed at that card's band of the ramp — the pivot reads
+     `--accent-gradient` and `--accent` straight off the card. */
+  background-image: var(--accent-gradient);
+  box-shadow: 0 0 12px -1px var(--accent);
+}
+
+.scale__column {
+  position: absolute;
+  top: var(--scale-column-top);
+  left: 50%;
+  width: var(--scale-column-width);
+  height: calc(100% - var(--scale-column-inset));
+  margin-left: calc(var(--scale-column-width) / -2);
+  border-radius: var(--radius-pill);
+  background: var(--line-strong);
+}
+
+.scale__base {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: var(--scale-base-width);
+  height: var(--scale-base-height);
+  margin-left: calc(var(--scale-base-width) / -2);
+  border-radius: var(--radius-pill);
+  background: var(--line-strong);
+}
+
+/* Card-sized variant: fixed measurements rather than the hero's viewport-based
+   clamps, because a card is far narrower than the viewport it sits in. It
+   shrinks with its column so a narrow phone never forces a horizontal scroll. */
+.scale--mini {
+  --scale-width: min(150px, 100%);
+  --scale-height: 96px;
+  --scale-beam-top: 24px;
+  --scale-beam-height: 3px;
+  --scale-cord-height: 15px;
+  --scale-load-width: 38px;
+  --scale-load-height: 30px;
+  --scale-dish-width: 42px;
+  --scale-dish-height: 7px;
+  --scale-dish-border: 1.5px;
+  --scale-pivot-size: 9px;
+  --scale-column-top: 28px;
+  --scale-column-inset: 34px;
+  --scale-column-width: 3px;
+  --scale-base-width: 58px;
+  --scale-base-height: 3px;
+  --scale-gap-below: 0;
+}
+
+/* ==========================================================================
+   Home layout — hero and categories as a balanced two-column pair.
+   Structural only: every rule below repositions or resizes `.home` /
+   `.categories`, none of it touches their colours or the cards' own styling.
+   Below 1080px `.home-layout` reverts to a single column and the 960px/520px
+   rules at the foot of this file take over. Those rules carry the `.home-layout`
+   prefix for a reason — see the comment above them; without it they lose to the
+   1080px block here and the cards never stack.
+   ========================================================================== */
+
+.home-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+  width: 100%;
+  max-width: 1240px;
+}
+
+.home-layout .home {
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+/* No categories to show (every category has showOnHome off): let the hero
+   take the full width instead of sitting beside an empty column. */
+.home-layout .home:only-child {
+  grid-column: 1 / -1;
+  max-width: 560px;
+}
+
+.home-layout .categories {
+  width: 100%;
+  max-width: none;
+  margin-top: 0;
+}
+
+.home-layout .categories__grid {
+  /* Same min(columns, 2) shape the mobile grid already uses below 960px —
+     reused here so today's four cards land as 2x2 and a five- or six-card
+     set still degrades sensibly (3+2, 3+3) instead of needing new logic. */
+  grid-template-columns: repeat(min(var(--category-columns, 4), 2), minmax(0, 1fr));
+  max-width: none;
+}
+
+.home-layout .category-card {
+  /* Lighter than it looks: most of the extra footprint over the base card
+     comes from the bigger illustration below, not from padding eating into
+     the column. */
+  padding: clamp(18px, 2vw, 28px) clamp(10px, 1.4vw, 16px);
+}
+
+.home-layout .category-card__stage {
+  /* The card's own padding already frames the illustration, so the stage's
+     usual inline padding would only double up and shrink the room left for
+     it — removed here, kept everywhere else. */
+  padding-inline: 0;
+  min-height: clamp(110px, 11vw, 150px);
+}
+
+/* The card illustration, sized up for a much wider column than a mobile
+   grid cell. Width and height are clamped with the same slope (18vw/11.5vw,
+   matching the mini scale's own 150:96 ratio), so unlike the plain
+   `min(150px, 100%)` mobile version, this can shrink at the low end without
+   the fixed height it would otherwise keep — which is what let the artwork
+   go visibly out of proportion in a narrow column. */
+.home-layout .scale--mini {
+  --scale-width: clamp(150px, 18vw, 190px);
+  --scale-height: clamp(96px, 11.5vw, 122px);
+  --scale-beam-top: clamp(24px, 2.3vw, 30px);
+  --scale-cord-height: clamp(15px, 1.4vw, 19px);
+  --scale-load-width: clamp(38px, 3.6vw, 48px);
+  --scale-load-height: clamp(30px, 2.9vw, 38px);
+  --scale-dish-width: clamp(42px, 4vw, 53px);
+  --scale-column-top: clamp(28px, 2.6vw, 35px);
+  --scale-column-inset: clamp(34px, 3.2vw, 43px);
+  --scale-base-width: clamp(58px, 5.5vw, 73px);
+}
+
+@media (max-width: 1080px) {
+  .home-layout {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+  }
+
+  .home-layout .home,
+  .home-layout .home:only-child {
+    max-width: 100%;
+  }
+
+  .home-layout .categories {
+    width: 100%;
+    max-width: 940px;
+    margin-top: clamp(32px, 6vw, 56px);
+  }
+
+  .home-layout .categories__grid {
+    grid-template-columns: repeat(var(--category-columns, 4), minmax(0, 1fr));
+    max-width: calc(var(--category-columns, 4) * 235px);
+  }
+
+  .home-layout .category-card {
+    padding: clamp(14px, 2vw, 20px) clamp(8px, 1.4vw, 14px);
+  }
+
+  .home-layout .category-card__stage {
+    padding-inline: 12px;
+    min-height: 96px;
+  }
+
+  .home-layout .scale--mini {
+    --scale-width: min(150px, 100%);
+    --scale-height: 96px;
+    --scale-beam-top: 24px;
+    --scale-cord-height: 15px;
+    --scale-load-width: 38px;
+    --scale-load-height: 30px;
+    --scale-dish-width: 42px;
+    --scale-column-top: 28px;
+    --scale-column-inset: 34px;
+    --scale-base-width: 58px;
+  }
+}
+
+/* ==========================================================================
+   Home — category cards
+   Each card is the game in miniature: two objects from that category on a
+   small balance. The card opens that category's page; its content is still to
+   come, so the card promises a page, not a mode.
+   ========================================================================== */
+
+.categories {
+  width: 100%;
+  max-width: 940px;
+  margin-top: clamp(32px, 6vw, 56px);
+}
+
+/* Both section eyebrows are gradient text, and each takes the gradient of the
+   section under it: the categories heading wears the warm ramp with the
+   wordmark and the CTAs, the questions heading wears the green that runs the
+   whole FAQ. Size, weight, tracking and case are untouched — this is a fill,
+   not a type change — and the plain colour underneath is what shows if
+   background-clip is unavailable. */
+.categories__title,
+.faq__title {
+  /* The box has to hug the words: a gradient painted across a full-width
+     block and then clipped to a short centred label would only ever show the
+     middle of the ramp. `fit-content` + auto margins keeps it centred while
+     making the ramp run from the first letter to the last. */
+  width: fit-content;
+  margin: 0 auto var(--gap-md);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.categories__title {
+  background-image: var(--grad-warm);
+}
+
+.faq__title {
+  background-image: var(--grad-green);
+}
+
+.categories__grid {
+  display: grid;
+  /* The column count comes from HomeScreen, which picks it from how many
+     categories are featured — it used to be a hard-coded 4 back when 4 was also
+     how many categories existed. Four is still the widest row the container
+     fits, so with all four shown this renders exactly as it always did.
+
+     minmax(0, 1fr) rather than 1fr: grid items default to min-content width and
+     would otherwise refuse to shrink below their contents. */
+  grid-template-columns: repeat(var(--category-columns, 4), minmax(0, 1fr));
+  gap: clamp(10px, 1.6vw, 16px);
+  /* With one or two cards a full-width track would stretch them into something
+     that no longer reads as a card, so the grid is capped at the width those
+     columns would have had in a full row, then centred. At four columns the cap
+     exceeds the container and does nothing. */
+  max-width: calc(var(--category-columns, 4) * 235px);
+  margin-inline: auto;
+}
+
+/* Each card owns one band of the ramp, set as `--card-a`/`--card-b` and then
+   fed back into `--accent-gradient` and `--accent` *on the card itself*. That
+   is what recolours the balance's pivot without the scale knowing anything
+   about categories: it already reads both tokens, and here it reads the card's
+   values instead of the page's. The hover edge and the focus ring come from
+   the same two.
+
+   The defaults below are the middle of the ramp, so a card outside the
+   four-card cycle still gets a colour rather than falling back to nothing. */
+.category-card {
+  --card-a: var(--spectrum-violet);
+  --card-b: var(--spectrum-magenta);
+  --accent-gradient: linear-gradient(135deg, var(--card-a) 0%, var(--card-b) 100%);
+  --accent: var(--card-b);
+
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-items: center;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  padding: clamp(14px, 2vw, 20px) clamp(8px, 1.4vw, 14px);
+  text-align: center;
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  transition:
+    background-color 0.18s var(--ease),
+    border-color 0.18s var(--ease),
+    box-shadow 0.22s var(--ease);
+}
+
+/* The four bands, in reading order, so a full row is the whole ramp read left
+   to right — and so is a 2x2 block, which is what the wide layout shows. */
+.categories__grid > .category-card:nth-child(4n + 1) {
+  --card-a: var(--spectrum-blue);
+  --card-b: var(--spectrum-indigo);
+}
+
+.categories__grid > .category-card:nth-child(4n + 2) {
+  --card-a: var(--spectrum-violet);
+  --card-b: var(--spectrum-magenta);
+}
+
+.categories__grid > .category-card:nth-child(4n + 3) {
+  --card-a: var(--spectrum-rose);
+  --card-b: var(--spectrum-coral);
+}
+
+.categories__grid > .category-card:nth-child(4n + 4) {
+  --card-a: var(--spectrum-ember);
+  --card-b: var(--spectrum-orange);
+}
+
+.category-card:hover {
+  background: var(--ink-800);
+  border-color: transparent;
+  box-shadow: 0 18px 40px -26px var(--card-b);
+}
+
+.category-card:hover::before {
+  opacity: 1;
+}
+
+/* The name is the only button a card may hold — the balance is decorative
+   markup, which phrasing content cannot contain — so it stretches over the
+   whole card and makes it one click target named after its category. */
+.category-card__open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.category-card__open:focus-visible {
+  outline: none;
+}
+
+.category-card__open:focus-visible::after {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* The dishes hang slightly wider than the beam, as on the hero scale; the
+   padding here is what keeps that overhang inside the card. */
+.category-card__stage {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-width: 0;
+  /* A category with fewer than two objects has no pair to weigh, so the stage
+     renders empty. Reserving the mini scale's own height keeps such a card the
+     same height as the ones beside it, rather than leaving a short card in the
+     row — which is reachable now that the homepage grid is data-driven. */
+  min-height: 96px;
+  margin-bottom: var(--gap-sm);
+  padding-inline: 12px;
+}
+
+.category-card__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Home — bento grid
+   A faithful rebuild of the Apple reference screenshot: two columns, three
+   rows, the two tall cards interlocking around the two short ones.
+
+   Everything is expressed in `--px`, which is one *reference* pixel: the grid
+   is designed at a 1240px width, and `--px` is 1/1240th of the grid's actual
+   width, so at 1240px every number below is the literal pixel value measured
+   off the reference, and narrower the whole card scales as one picture rather
+   than reflowing a piece at a time. That needs a container, not the viewport,
+   because `.site-main` has padding — hence `container-type` on `.bento` and
+   the unit on its child (an element is never its own query container).
+
+   The numbers come from the screenshot: surface #1c1c1e on a black page,
+   28px radius, 22px gutters, 227px rows (the middle one shortened to 179.4 —
+   see `grid-template-rows` below), 48px padding, 42px/48px headlines on
+   the tall cards and 35px/43px on the short ones, #f5f5f7 ink with #86868b for
+   secondary copy. The type is the site's own, not the reference's: the headline
+   takes `--font-display` from the shared list above, everything else inherits
+   `--font-body`.
+   ========================================================================== */
+
+.bento {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 1240px;
+  margin-top: clamp(88px, 12vw, 144px);
+}
+
+.bento__grid {
+  --px: calc(100cqw / 1240);
+
+  /* These were measured out of the reference screenshot and are now the
+     site's own tokens — the palette was rebuilt around them, so the bento
+     reads them back rather than keeping a second copy. */
+  --bento-surface: var(--ink-850);
+  --bento-surface-hover: var(--ink-800);
+  --bento-ink: var(--text);
+  --bento-ink-dim: var(--text-faint);
+  --bento-radius: calc(28 * var(--px));
+  --bento-pad: calc(48 * var(--px));
+  --bento-ring: calc(4 * var(--px));
+  --bento-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* The ramp this card's ring was sampled from is the site's brand ramp now
+     (`--spectrum` in the token block), so it is referenced, not repeated.
+     `AiGradientStops` in `icons.tsx` still carries the same stops a third
+     time, which an SVG needs because it cannot read a CSS gradient. */
+  --bento-grad-ai: var(--spectrum);
+  /* The FAQ card's green is a global token now — it runs the whole questions
+     section below the grid, so the two cannot be allowed to drift. */
+  --bento-grad-green: var(--grad-green);
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* The middle row is the one both tall cards share — the feature card spans
+     rows 1-2 and the FAQ card rows 2-3 — so shortening row 2 alone takes 10%
+     off the height of both without moving the two short cards, which sit in
+     rows 1 and 3 at the reference's 227px. 476 (two rows + a gutter) less 10%
+     is 428.4, so row 2 is 227 - 47.6. Both tall cards bottom-align their
+     content, and that 47.6px was the empty space above it. */
+  grid-template-rows:
+    minmax(calc(227 * var(--px)), auto)
+    minmax(calc(179.4 * var(--px)), auto)
+    minmax(calc(227 * var(--px)), auto);
+  gap: calc(22 * var(--px));
+  width: 100%;
+}
+
+.bento-card--feature {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+.bento-card--contact {
+  grid-column: 2;
+  grid-row: 1;
+}
+.bento-card--coffee {
+  grid-column: 1;
+  grid-row: 3;
+}
+.bento-card--faq {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+}
+
+.bento-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  padding: var(--bento-pad);
+  color: var(--bento-ink);
+  background-color: var(--bento-surface);
+  border-radius: var(--bento-radius);
+  text-decoration: none;
+}
+
+/* The two tall cards stack icon over headline against the bottom-left corner;
+   the two short ones set the icon beside the text, both vertically centred. */
+.bento-card--feature,
+.bento-card--faq {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.bento-card--contact,
+.bento-card--coffee {
+  align-items: center;
+  gap: calc(38 * var(--px));
+}
+
+/* ---- type ---------------------------------------------------------------- */
+
+/* Sizes are the reference's, measured as cap heights and converted through the
+   display face's own cap ratio (Audex 0.732em vs the reference's 0.714em — a
+   3% difference, which is why the numbers below are the measured ones). */
+.bento-card__headline {
+  display: block;
+  margin: 0;
+  font-size: calc(35 * var(--px));
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.012em;
+}
+
+.bento-card--feature .bento-card__headline,
+.bento-card--faq .bento-card__headline {
+  font-size: calc(42 * var(--px));
+  line-height: 1.143;
+}
+
+/* The reference hard-wraps its headlines rather than letting them reflow, so
+   the lines that are written as lines are rendered as lines. */
+.bento-card__line {
+  display: block;
+}
+
+.bento-card__body {
+  display: block;
+  min-width: 0;
+}
+
+.bento-card__sub {
+  display: block;
+  margin-top: calc(10 * var(--px));
+  font-size: max(13px, calc(19 * var(--px)));
+  font-weight: 400;
+  line-height: 1.42;
+  letter-spacing: 0;
+  color: var(--bento-ink-dim);
+}
+
+/* Gradient-filled text. Each span paints the whole ramp across its own width,
+   which is what the reference does: the ring runs blue → orange over the card,
+   the words run blue → orange over the words. */
+.bento-card__line--gradient {
+  background-image: var(--bento-grad-ai);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.bento-card__line--green {
+  background-image: var(--bento-grad-green);
+}
+
+/* ---- icons --------------------------------------------------------------- */
+
+.bento-card__icon {
+  display: block;
+  flex: none;
+}
+
+.bento-card__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The weight-star mark is portrait (100 x 115) where the reference's glyph was
+   landscape, so the box takes the artwork's own ratio instead of the measured
+   123 x 72 — a landscape box would letterbox it and leave the mark floating in
+   dead space. Height matches the FAQ card's glyph, the other tall card's, so
+   the two line up; the width falls out of 100:115. `color` is the card's own
+   ink, which the mark's `currentColor` fills take, so it is the same white as
+   the headline beneath it. */
+.bento-card__icon--mark {
+  width: calc(67.8 * var(--px));
+  height: calc(78 * var(--px));
+  margin-bottom: calc(36 * var(--px));
+  color: var(--bento-ink);
+}
+
+.bento-card__icon--mail {
+  width: calc(90 * var(--px));
+  height: calc(66 * var(--px));
+}
+
+.bento-card__icon--cup {
+  width: calc(98 * var(--px));
+  height: calc(98 * var(--px));
+}
+
+.bento-card__icon--faq {
+  width: calc(78 * var(--px));
+  height: calc(78 * var(--px));
+  margin-bottom: calc(46 * var(--px));
+}
+
+/* ---- feature card -------------------------------------------------------- */
+
+/* The reference fades its photo into the card surface over the bottom third,
+   which is what lets white type sit on it; same gradient here, ending on the
+   card's own colour so the fade has no seam. */
+.bento-card--feature {
+  background-image: linear-gradient(
+      180deg,
+      rgb(28 28 30 / 0%) 52%,
+      rgb(28 28 30 / 72%) 76%,
+      #1c1c1e 92%
+    ),
+    var(--bento-photo, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* ---- contact card: the gradient ring ------------------------------------- */
+
+/* Drawn outside the card's own box, as in the reference, where the bordered
+   card measures ~4px larger on every side than its plain neighbours. A ring
+   rather than a border keeps it out of the grid's sizing entirely. */
+.bento-card--contact::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--bento-ring));
+  padding: var(--bento-ring);
+  border-radius: calc(var(--bento-radius) + var(--bento-ring));
+  background: var(--bento-grad-ai);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ---- interaction --------------------------------------------------------- */
+
+/* Apple's hover on a tile like this is a lift in the surface, nothing more —
+   no shadow, no travel. The press is a fraction of a scale. */
+.bento-card--link {
+  cursor: pointer;
+  transition:
+    background-color 0.3s var(--bento-ease),
+    transform 0.3s var(--bento-ease);
+}
+
+.bento-card--link:hover {
+  background-color: var(--bento-surface-hover);
+}
+
+.bento-card--link:active {
+  transform: scale(0.995);
+}
+
+.bento-card--link:focus-visible {
+  outline: 2px solid var(--bento-ink);
+  outline-offset: calc(4 * var(--px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-card--link {
+    transition: none;
+  }
+  .bento-card--link:active {
+    transform: none;
+  }
+}
+
+/* ---- one column ---------------------------------------------------------- */
+
+/* Below the point where two columns stop being readable the cards stack and
+   `--px` stops tracking the full width, so type does not shrink with it: the
+   scale tops out at the reference and bottoms out at a legible floor. */
+@container (max-width: 900px) {
+  .bento__grid {
+    --px: clamp(0.56px, calc(100cqw / 700), 1px);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+
+  .bento-card {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  /* The two tall cards are 10% shorter here too, matching the two-column
+     grid above: 472 - 47.2 and 330 - 33. The short pair keeps 227. */
+  .bento-card--feature {
+    min-height: calc(424.8 * var(--px));
+  }
+
+  .bento-card--contact,
+  .bento-card--coffee {
+    min-height: calc(227 * var(--px));
+  }
+
+  .bento-card--faq {
+    min-height: calc(297 * var(--px));
+  }
+}
+
+/* Narrow enough that an icon beside three words leaves no room for the words:
+   the two short cards adopt the tall cards' stacked arrangement. */
+@container (max-width: 520px) {
+  .bento-card--contact,
+  .bento-card--coffee {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: calc(28 * var(--px));
+  }
+}
+
+/* ==========================================================================
+   Home — FAQ
+   Native <details>, styled to match the category cards: same surface, same
+   border, same radius. Narrower than the cards above it because this is prose
+   and a long measure is hard to read.
+   ========================================================================== */
+
+/* The whole section is green: the bento card that points down here wears the
+   FAQ green, so the questions it lands on wear it too. Re-pointing `--accent`
+   and `--accent-hot` on the section is what carries that into everything
+   inside it that already reads them — the keyboard focus ring in particular,
+   which would otherwise still be the page's violet. */
+.faq {
+  --accent: #7ccb62;
+  --accent-hot: var(--green-lift);
+
+  width: 100%;
+  max-width: 760px;
+  margin-top: clamp(88px, 12vw, 144px);
+}
+
+.faq__list {
+  display: grid;
+  gap: 8px;
+}
+
+.faq__item {
+  position: relative;
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  transition:
+    background-color 0.16s var(--ease),
+    border-color 0.16s var(--ease);
+}
+
+.faq__item:hover {
+  border-color: var(--line-strong);
+}
+
+/* An open question lifts one step up the grey ladder and trades its hairline
+   for the gradient edge, which is the same move the category cards make on
+   hover — one language for "this surface is active". Here the edge is the
+   section's green rather than the page's ramp. */
+.faq__item[open] {
+  background: var(--ink-800);
+  border-color: transparent;
+}
+
+.faq__item::after {
+  background-image: var(--grad-green);
+}
+
+.faq__item[open]::after {
+  opacity: 1;
+}
+
+.faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-md);
+  padding: clamp(14px, 2.2vw, 18px) clamp(16px, 2.6vw, 22px);
+  font-size: clamp(0.88rem, 2.2vw, 0.95rem);
+  font-weight: 700;
+  line-height: 1.35;
+  text-wrap: balance;
+  cursor: pointer;
+  /* The default disclosure triangle is replaced by the chevron below. */
+  list-style: none;
+}
+
+.faq__question::-webkit-details-marker {
+  display: none;
+}
+
+/* The open question's own text takes the green ramp, the way the bento card
+   that links here paints its accent phrase. It is the inner span rather than
+   the whole summary because the chevron sits in there too and has a fill of
+   its own — `background-clip: text` on the parent would take the chevron's
+   circle with it. */
+.faq__item[open] .faq__question {
+  color: var(--green-lift);
+}
+
+.faq__item[open] .faq__question-text {
+  background-image: var(--grad-green);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.faq__chevron {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: var(--text-faint);
+  background: var(--ink-700);
+  transition:
+    transform 0.2s var(--ease),
+    color 0.16s var(--ease),
+    background-color 0.16s var(--ease);
+}
+
+.faq__chevron svg {
+  width: 15px;
+}
+
+.faq__item[open] .faq__chevron {
+  color: var(--accent-ink);
+  background-color: #7ccb62;
+  background-image: var(--grad-green);
+  transform: rotate(180deg);
+}
+
+.faq__answer {
+  padding: 0 clamp(16px, 2.6vw, 22px) clamp(16px, 2.4vw, 20px);
+  /* Leaves room for the chevron so the last line does not run under it. */
+  padding-right: clamp(46px, 6vw, 60px);
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--text-dim);
+  text-wrap: pretty;
+}
+
+/* ==========================================================================
+   Scroll reveal
+   `useReveal` (src/components/useReveal.ts) flips `data-reveal` from `out` to
+   `in` the first time a section crosses into the viewport. Everything below is
+   the difference between those two states.
+
+   The *children* carry the movement, not the section: that is what makes it a
+   stagger, and it keeps `transform` off `.bento`, whose `container-type` the
+   whole grid inside is sized from. It is an animation rather than a transition
+   because `.bento-card--link` and the FAQ items already transition their own
+   hover properties, and a second `transition` on the same elements would
+   replace those rather than add to them.
+
+   `both` holds the opening frame through the delay, so a card that has not
+   started yet stays invisible instead of flashing in and back out.
+   ========================================================================== */
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bento[data-reveal='out'] .bento-card,
+.faq[data-reveal='out'] .faq__title,
+.faq[data-reveal='out'] .faq__list > li {
+  opacity: 0;
+}
+
+.bento[data-reveal='in'] .bento-card,
+.faq[data-reveal='in'] .faq__title,
+.faq[data-reveal='in'] .faq__list > li {
+  animation: reveal-rise 0.68s var(--reveal-ease) both;
+}
+
+/* The bento staggers along its own diagonal — top-left, top-right, down the
+   tall right card, then the bottom-left one — rather than in source order, so
+   the eye is led across the grid the way it reads it. */
+.bento[data-reveal='in'] .bento-card--feature {
+  animation-delay: 0ms;
+}
+
+.bento[data-reveal='in'] .bento-card--contact {
+  animation-delay: 80ms;
+}
+
+.bento[data-reveal='in'] .bento-card--faq {
+  animation-delay: 160ms;
+}
+
+.bento[data-reveal='in'] .bento-card--coffee {
+  animation-delay: 240ms;
+}
+
+/* `--reveal-i` is the question's index, set by `FaqSection`. Capped at eight
+   so a long list still finishes in about half a second rather than counting
+   itself out one row at a time. */
+.faq[data-reveal='in'] .faq__list > li {
+  animation-delay: calc(min(var(--reveal-i, 0), 8) * 55ms);
+}
+
+/* Reduced motion gets the content, not the choreography: no travel, no delay,
+   and nothing that has to finish before the section is readable. */
+@media (prefers-reduced-motion: reduce) {
+  .bento[data-reveal='out'] .bento-card,
+  .faq[data-reveal='out'] .faq__title,
+  .faq[data-reveal='out'] .faq__list > li {
+    opacity: 1;
+  }
+
+  .bento[data-reveal='in'] .bento-card,
+  .faq[data-reveal='in'] .faq__title,
+  .faq[data-reveal='in'] .faq__list > li {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Placeholder pages
+   The coffee page and the four category pages exist and are reachable, but
+   have no content yet. The reserved height keeps the page the size a page is,
+   so the header does not end up alone against the bottom of the viewport.
+   ========================================================================== */
+
+.blank-page {
+  width: 100%;
+  min-height: clamp(220px, 40vh, 420px);
+}
+
+/* ==========================================================================
+   Game
+   The whole game flow re-points `--accent` on itself, exactly as `.faq` does:
+   the warm ramp is what the primary CTA, the unit pill and the wordmark
+   already wear, so the keyboard focus ring, the input ring and the score's big
+   number follow it here without any component naming a colour. The violet the
+   global token carries belongs to the ramp's structural jobs, and beside a
+   warm CTA on a game screen it read as a third brand.
+
+   Results keep their own hues throughout — correct/wrong and the five accuracy
+   tiers are meaning, not brand, and nothing below touches them.
+   ========================================================================== */
+
+.game,
+.guess,
+.score,
+.notice {
+  --accent: var(--warm-lift);
+  --accent-hot: #fbc247;
+  --accent-gradient: var(--grad-warm);
+}
+
+.game {
+  display: grid;
+  justify-items: center;
+  gap: clamp(14px, 2.6vw, 24px);
+  width: 100%;
+  max-width: 900px;
+}
+
+.game__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-md);
+  width: 100%;
+}
+
+.game__round {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.game__round-count {
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.game__round-total {
+  color: var(--text-faint);
+}
+
+.pips {
+  display: flex;
+  gap: 7px;
+}
+
+.pips__pip {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink-600);
+  transition: background-color 0.2s var(--ease);
+}
+
+.pips__pip[data-state='current'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--text-faint);
+}
+
+.pips__pip[data-state='correct'] {
+  background: var(--correct);
+}
+
+.pips__pip[data-state='wrong'] {
+  background: var(--wrong);
+}
+
+/* Guess the Weight reuses the same pip markup with a tier instead of a
+   correct/wrong state — five colours on one shape rather than a second one. */
+.pips__pip[data-tier='perfect'] {
+  background: var(--tier-perfect);
+}
+
+.pips__pip[data-tier='veryGood'] {
+  background: var(--tier-very-good);
+}
+
+.pips__pip[data-tier='good'] {
+  background: var(--tier-good);
+}
+
+.pips__pip[data-tier='close'] {
+  background: var(--tier-close);
+}
+
+.pips__pip[data-tier='far'] {
+  background: var(--tier-far);
+}
+
+.game__prompt {
+  font-size: clamp(1.35rem, 4.2vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.game__prompt[data-result='correct'] {
+  color: var(--correct);
+}
+
+.game__prompt[data-result='wrong'] {
+  color: var(--wrong);
+}
+
+/* --- Arena ---------------------------------------------------------------- */
+
+.arena {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  gap: clamp(10px, 2vw, 20px);
+  width: 100%;
+}
+
+.arena__divider {
+  display: grid;
+  place-items: center;
+}
+
+.arena__badge {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--text-faint);
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition:
+    color 0.24s var(--ease),
+    border-color 0.24s var(--ease),
+    transform 0.32s var(--ease);
+}
+
+.arena__badge svg {
+  width: 20px;
+}
+
+.arena__vs {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.arena__divider[data-point] .arena__badge {
+  color: var(--correct);
+  border-color: var(--correct);
+}
+
+.arena__divider[data-point='left'] .arena__badge {
+  transform: rotate(180deg);
+}
+
+/* --- Object card ---------------------------------------------------------- */
+
+.card {
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: center;
+  gap: clamp(10px, 2vw, 18px);
+  position: relative;
+  padding: clamp(16px, 3vw, 26px) clamp(12px, 2.4vw, 22px);
+  text-align: center;
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  transition:
+    transform 0.16s var(--ease),
+    border-color 0.2s var(--ease),
+    background-color 0.2s var(--ease),
+    opacity 0.2s var(--ease);
+}
+
+.card:not(:disabled):hover {
+  transform: translateY(-4px);
+  border-color: transparent;
+  background: var(--ink-800);
+  box-shadow: var(--shadow-lift);
+}
+
+/* The warm edge from the shared "Gradient edge" block, so hovering a choice
+   answers the CTA below it rather than introducing a colour of its own. It is
+   masked rather than a real border, so lighting it up moves nothing. */
+.card:not(:disabled):hover::after {
+  opacity: 1;
+}
+
+.card:not(:disabled):active {
+  transform: translateY(-1px);
+}
+
+.card:disabled {
+  cursor: default;
+}
+
+/* A definite height: it is what the artwork's max-height resolves against,
+   and it keeps both objects the same visual size however different their
+   source artboards are. */
+.card__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(118px, 26vh, 240px);
+  overflow: hidden;
+}
+
+.card__label {
+  display: grid;
+  gap: 4px;
+}
+
+.card__name {
+  font-size: clamp(0.95rem, 2.4vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.card__weight {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  min-height: 1.6em;
+  font-variant-numeric: tabular-nums;
+}
+
+.card__weight-value {
+  font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.card__weight-unit {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+
+.card__tag {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 11px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-radius: var(--radius-pill);
+}
+
+.card__tag[data-variant='heavier'] {
+  color: var(--ink-on-bright);
+  background: var(--correct);
+}
+
+.card__tag[data-variant='pick'] {
+  color: var(--text-dim);
+  background: var(--ink-700);
+}
+
+/* A revealed card is washed in its own result hue rather than filled flat with
+   it: `--correct-grad` and `--wrong-grad` are the same green and orange, just
+   strongest at the top-left corner. The glow underneath is the same hue again,
+   which is what lifts the answered card off the black stage. */
+.card[data-status='correct'] {
+  border-color: var(--correct);
+  background-color: var(--ink-850);
+  background-image: var(--correct-grad);
+  box-shadow:
+    var(--shadow-lift),
+    0 18px 44px -30px var(--correct);
+}
+
+.card[data-status='wrong'] {
+  border-color: var(--wrong);
+  background-color: var(--ink-850);
+  background-image: var(--wrong-grad);
+  box-shadow:
+    var(--shadow-lift),
+    0 18px 44px -30px var(--wrong);
+}
+
+.card[data-status='muted'] {
+  opacity: 0.45;
+}
+
+/* --- Result footer -------------------------------------------------------- */
+
+.game__foot {
+  display: grid;
+  justify-items: center;
+  gap: var(--gap-sm);
+  /* Reserve the space so revealing an answer never shifts the arena. */
+  min-height: 108px;
+  align-content: start;
+}
+
+/* ==========================================================================
+   Guess the Weight
+   A second, independent mode: one object, a numeric guess, then a tiered
+   feedback card. Shares `.game__round`, `.pips`, `.button` and `.score` with
+   the heavier/lighter mode rather than duplicating them.
+   ========================================================================== */
+
+/* Two columns on a wide screen: the object panel on the left, everything you
+   interact with on the right. The one-column stack ran bar, prompt, stage, name,
+   result card and the Next button down a single column, which on a 1440x788
+   viewport came to 886px and left the button below the fold. The result card is
+   ~130px taller than the form it replaces, which is what tipped it over, so the
+   question phase fit and only the revealed one overflowed. Lifting the stage out
+   of that run fixes it at every short viewport, rather than shrinking the object
+   until it fits. The measure is `.game`'s own 900px, so both modes sit on the
+   same width. */
+.guess {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    'bar    bar'
+    'object prompt'
+    'object entry'
+    'object foot';
+  justify-items: center;
+  align-items: center;
+  gap: clamp(14px, 2.6vw, 24px);
+  width: 100%;
+  max-width: 900px;
+}
+
+.guess__bar {
+  grid-area: bar;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-md);
+  width: 100%;
+}
+
+.guess__prompt {
+  grid-area: prompt;
+  font-size: clamp(1.35rem, 4.2vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* The object gets the same panel the heavier mode's two choices stand on,
+   rather than floating in the middle of the black page: one object against
+   nothing had no sense of scale or place. The glow behind it is the warm ramp's
+   middle stop at low alpha, which is the section's own `--accent`. */
+/* The object column. `align-self: start` rather than centre: the right column
+   grows by ~90px when the result card replaces the form, and a centred object
+   would slide down by half of that on every reveal. Pinned to the top it keeps
+   its place, and its top edge lines up with the prompt's first line. */
+.guess__object {
+  grid-area: object;
+  align-self: start;
+  display: grid;
+  justify-items: center;
+  gap: var(--gap-sm);
+  width: 100%;
+}
+
+.guess__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: clamp(160px, 32vh, 280px);
+  padding: clamp(10px, 2vw, 18px);
+  background-color: var(--ink-850);
+  background-image: radial-gradient(
+    120% 90% at 50% 112%,
+    rgb(245 163 65 / 10%) 0%,
+    rgb(245 163 65 / 0%) 70%
+  );
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+/* Spacing is the object column's `gap` now; the negative margin here used to
+   cancel the section's much larger gap when the name was a direct child. */
+.guess__name {
+  font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  text-align: center;
+}
+
+.guess__form {
+  grid-area: entry;
+  display: grid;
+  justify-items: center;
+  gap: var(--gap-md);
+  width: 100%;
+}
+
+.guess__input-group {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: min(100%, 360px);
+  padding: 8px 8px 8px 22px;
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  transition:
+    border-color 0.16s var(--ease),
+    box-shadow 0.2s var(--ease);
+}
+
+/* Focus lights the shared gradient edge in the warm ramp instead of painting a
+   flat violet border. The field sits directly above a warm primary CTA, and
+   the one hue the pair must not introduce between them is a third one. The
+   hairline goes transparent underneath so the ring replaces it rather than
+   doubling it, and the box does not move either way. */
+.guess__input-group:focus-within {
+  border-color: transparent;
+  box-shadow: 0 10px 34px -24px var(--warm-lift);
+}
+
+.guess__input-group::after {
+  background-image: var(--grad-warm);
+}
+
+.guess__input-group:focus-within::after {
+  opacity: 1;
+}
+
+.guess__input {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 4vw, 1.7rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  background: none;
+  border: none;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.guess__input::-webkit-outer-spin-button,
+.guess__input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.guess__input-unit {
+  padding: 9px 15px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  background: var(--ink-800);
+  border-radius: var(--radius-pill);
+}
+
+.guess__foot {
+  grid-area: foot;
+  display: grid;
+  justify-items: center;
+  gap: var(--gap-sm);
+  min-height: 60px;
+  align-content: start;
+}
+
+/* --- Feedback card ---------------------------------------------------------
+   Every colour comes from the answer's tier via `--tier-*`, so the five
+   outcomes are value overrides on one card rather than five separate ones. */
+
+@keyframes guess-feedback-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes guess-feedback-label-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* One tier block, read by both the card here and the results list on the score
+   screen: a tier sets four values and every rule below reads them, so adding a
+   tier is four lines rather than a sixth copy of a card. */
+.guess-feedback,
+.guess-results__row {
+  --tier-color: var(--tier-far);
+  --tier-lift: var(--tier-far-lift);
+  --tier-grad: var(--tier-far-grad);
+  --tier-ink: var(--tier-far-ink);
+}
+
+.guess-feedback[data-tier='perfect'],
+.guess-results__row[data-tier='perfect'] {
+  --tier-color: var(--tier-perfect);
+  --tier-lift: var(--tier-perfect-lift);
+  --tier-grad: var(--tier-perfect-grad);
+  --tier-ink: var(--tier-perfect-ink);
+}
+
+.guess-feedback[data-tier='veryGood'],
+.guess-results__row[data-tier='veryGood'] {
+  --tier-color: var(--tier-very-good);
+  --tier-lift: var(--tier-very-good-lift);
+  --tier-grad: var(--tier-very-good-grad);
+  --tier-ink: var(--tier-very-good-ink);
+}
+
+.guess-feedback[data-tier='good'],
+.guess-results__row[data-tier='good'] {
+  --tier-color: var(--tier-good);
+  --tier-lift: var(--tier-good-lift);
+  --tier-grad: var(--tier-good-grad);
+  --tier-ink: var(--tier-good-ink);
+}
+
+.guess-feedback[data-tier='close'],
+.guess-results__row[data-tier='close'] {
+  --tier-color: var(--tier-close);
+  --tier-lift: var(--tier-close-lift);
+  --tier-grad: var(--tier-close-grad);
+  --tier-ink: var(--tier-close-ink);
+}
+
+.guess-feedback[data-tier='far'],
+.guess-results__row[data-tier='far'] {
+  --tier-color: var(--tier-far);
+  --tier-lift: var(--tier-far-lift);
+  --tier-grad: var(--tier-far-grad);
+  --tier-ink: var(--tier-far-ink);
+}
+
+/* The card is washed in its tier's own hue rather than filled flat with it:
+   `--tier-grad` runs the lighter end of that hue down to almost nothing, over
+   the same #1c1c1e surface every other panel on the site is made of, so the
+   card is opaque and reads as a panel instead of a tint on the page. The edge
+   and the glow are the same hue again — a "far" card is red everywhere. */
+/* Shares the `entry` area with the form it replaces, so the swap on reveal
+   happens inside one slot instead of changing the column's shape. */
+.guess-feedback {
+  grid-area: entry;
+  display: grid;
+  justify-items: center;
+  gap: var(--gap-sm);
+  width: 100%;
+  max-width: 380px;
+  padding: clamp(20px, 4.5vw, 30px) clamp(18px, 4vw, 26px);
+  text-align: center;
+  background-color: var(--ink-850);
+  background-image: var(--tier-grad);
+  border: 1px solid var(--tier-lift);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    var(--shadow-lift),
+    0 20px 46px -30px var(--tier-lift);
+  animation: guess-feedback-in 0.4s var(--ease) both;
+}
+
+/* --- Exact match: a distinct, one-off celebration -------------------------
+   Still the `perfect` tier everywhere else in the app (pips, the results
+   list) — this is purely a richer presentation for the instant it happens.
+   The base gradient stops are 18% over the same `--ink-850` surface the other
+   four tiers' washes sit on, so text contrast holds no matter which hue is
+   dominant at a given animation frame. */
+
+@keyframes guess-exact-gradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes guess-exact-label-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-6deg);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.16) rotate(3deg);
+  }
+  80% {
+    transform: scale(0.97) rotate(-1deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes guess-exact-sparkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.25) rotate(14deg);
+    opacity: 1;
+  }
+}
+
+.guess-feedback[data-exact] {
+  /* An opaque base under the translucent gradient stops below — background-color
+     always paints beneath background-image, so this is what makes the exact-match
+     card fully opaque instead of letting the page show through it like every
+     other result's `--tier-soft` fill still does. */
+  background-color: var(--ink-850);
+  background-image: linear-gradient(
+    120deg,
+    rgb(224 30 55 / 18%),
+    rgb(52 179 228 / 18%),
+    rgb(226 186 80 / 18%),
+    rgb(61 220 151 / 18%),
+    rgb(242 106 141 / 18%),
+    rgb(224 30 55 / 18%)
+  );
+  background-size: 260% 260%;
+  border-color: var(--accent-hot);
+  box-shadow:
+    var(--shadow-lift),
+    0 0 30px -10px rgb(242 106 141 / 55%);
+  animation:
+    guess-feedback-in 0.4s var(--ease) both,
+    guess-exact-gradient 3.4s ease infinite;
+}
+
+.guess-feedback[data-exact] .guess-feedback__label {
+  color: var(--text);
+  text-shadow: 0 1px 12px rgb(18 10 12 / 55%);
+  animation: guess-exact-label-in 0.6s var(--ease) 0.08s both;
+}
+
+.guess-feedback[data-exact] .guess-feedback__label svg {
+  width: 16px;
+  animation: guess-exact-sparkle 1.7s ease-in-out infinite;
+}
+
+/* The label takes the *lift*, not the base: the tier colours were picked to be
+   printed on, and `--tier-very-good` (#077b39) as type on #1c1c1e is barely
+   there. The filled pill below still takes the base with its checked ink. */
+.guess-feedback__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4.5vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--tier-lift);
+  animation: guess-feedback-label-in 0.45s var(--ease) 0.08s both;
+}
+
+.guess-feedback__percent {
+  padding: 5px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--tier-ink);
+  background: var(--tier-color);
+  border-radius: var(--radius-pill);
+}
+
+.guess-feedback__rows {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  margin-top: var(--gap-xs);
+}
+
+.guess-feedback__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+
+.guess-feedback__row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.guess-feedback__row dt {
+  color: var(--text-faint);
+  font-weight: 600;
+}
+
+.guess-feedback__row dd {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.guess-feedback__row dd svg {
+  width: 13px;
+  color: var(--text-faint);
+}
+
+/* --- Results list (score screen) ------------------------------------------- */
+
+.guess-results {
+  display: grid;
+  gap: var(--gap-sm);
+  width: 100%;
+}
+
+/* The same wash as the feedback card, at the same values — eight of these sit
+   in a column, so the gradient's quiet end doing most of the work is what keeps
+   the list readable rather than eight loud bands. The 3px rule down the left is
+   the tier's lift, which is what you actually scan. */
+.guess-results__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 12px 16px;
+  text-align: left;
+  background-color: var(--ink-850);
+  background-image: var(--tier-grad);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--tier-lift);
+  border-radius: var(--radius-md);
+}
+
+.guess-results__index {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-faint);
+}
+
+.guess-results__name {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.guess-results__tag {
+  padding: 3px 10px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tier-lift);
+  white-space: nowrap;
+}
+
+.guess-results__values {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Dispute
+   ========================================================================== */
+
+.dispute {
+  display: grid;
+  justify-items: center;
+}
+
+.dispute__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-faint);
+  border-radius: var(--radius-pill);
+  transition: color 0.16s var(--ease);
+}
+
+.dispute__trigger svg {
+  width: 13px;
+}
+
+.dispute__trigger:hover {
+  color: var(--text-dim);
+}
+
+.dispute__panel {
+  display: grid;
+  justify-items: center;
+  gap: var(--gap-sm);
+  padding: 14px 18px;
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.dispute__prompt {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.dispute__options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 15px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: var(--ink-700);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  transition:
+    border-color 0.16s var(--ease),
+    color 0.16s var(--ease);
+}
+
+.chip svg {
+  width: 14px;
+}
+
+.chip:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.dispute__quiet {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.dispute__quiet:hover {
+  color: var(--text-dim);
+}
+
+.dispute__thanks {
+  font-size: 0.82rem;
+  color: var(--correct);
+}
+
+/* ==========================================================================
+   Score & notices
+   ========================================================================== */
+
+.score {
+  display: grid;
+  justify-items: center;
+  gap: var(--gap-md);
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+}
+
+.score__eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.score__headline {
+  font-size: clamp(1.8rem, 5.5vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+/* A warm halo behind the result, painted as the element's own background so it
+   sits under the glyphs with no pseudo-element and no stacking order to get
+   wrong. It is what stops the number floating alone on a very tall black page.
+   The horizontal padding is what gives the radial something to spread into. */
+.score__fraction {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 0 clamp(20px, 6vw, 64px);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  background: radial-gradient(
+    70% 120% at 50% 50%,
+    rgb(245 163 65 / 13%) 0%,
+    rgb(245 163 65 / 0%) 72%
+  );
+}
+
+/* The one number the whole screen exists to show, so it is the one place the
+   warm ramp is painted straight through type. `background-clip: text` needs a
+   box the size of the glyphs to clip out of — `fit-content` — or a full-width
+   box would only ever show the middle of the ramp. */
+.score__correct {
+  font-size: clamp(4.5rem, 17vw, 7.5rem);
+  width: fit-content;
+  color: transparent;
+  background-image: var(--grad-warm);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.score__slash,
+.score__total {
+  font-size: clamp(2rem, 7vw, 3rem);
+  color: var(--text-faint);
+}
+
+.score__detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+.score__percent {
+  padding: 4px 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-ink);
+  background-color: var(--warm-lift);
+  background-image: var(--grad-warm);
+  border-radius: var(--radius-pill);
+}
+
+.score__actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap-sm);
+  margin-top: var(--gap-xs);
+}
+
+/* The share button's "copied" confirmation.
+
+   Anchored to the **actions block**, not to the button and not in the flex
+   flow, which is the only position that survives both ways the row can be
+   read. Two earlier attempts: under the button itself, which the wrapped
+   third button landed on top of at 500px; and as a `flex-basis: 100%` row,
+   which broke the line and pushed "Back to start" onto its own row at every
+   width. Out of flow and below everything, it costs no layout at all — and
+   nothing follows `.score__actions` for it to sit on. */
+.share__status {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  line-height: 1.2;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--warm-lift);
+  pointer-events: none;
+}
+
+.notice {
+  display: grid;
+  justify-items: center;
+  gap: var(--gap-md);
+  width: 100%;
+  max-width: 460px;
+  text-align: center;
+}
+
+.notice__title {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.notice__message {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.notice__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap-sm);
+}
+
+/* ==========================================================================
+   Responsive
+   Below 720px the two objects stack, so the arrow that points at the heavier
+   object has to point up/down instead of left/right.
+   ========================================================================== */
+
+/* Below two workable columns the guess screen returns to the stack it has
+   always had, on its original 560px measure. The overflow this replaces was a
+   wide-and-short problem; a narrow viewport is tall enough for the column. */
+@media (max-width: 900px) {
+  .guess {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'bar'
+      'prompt'
+      'object'
+      'entry'
+      'foot';
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 720px) {
+  .arena {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .arena__badge {
+    width: 38px;
+    height: 38px;
+  }
+
+  .arena__divider[data-point='left'] .arena__badge {
+    transform: rotate(-90deg);
+  }
+
+  .arena__divider[data-point='right'] .arena__badge {
+    transform: rotate(90deg);
+  }
+
+  .card {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+    padding: 14px 16px;
+  }
+
+  .card__stage {
+    width: clamp(74px, 22vw, 104px);
+    height: clamp(74px, 15vh, 104px);
+    flex: none;
+  }
+
+  .card__weight {
+    justify-content: flex-start;
+  }
+
+  .card__tag {
+    top: 10px;
+    left: auto;
+    right: 12px;
+    transform: none;
+  }
+
+  .game__foot {
+    min-height: 96px;
+  }
+
+  .guess-results__row {
+    grid-template-columns: auto 1fr;
+  }
+
+  .guess-results__tag {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .guess__input-group {
+    width: 100%;
+  }
+
+  .site-header {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-header {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .select__input {
+    max-width: 44vw;
+  }
+}
+
+/* Category cards: up to 4 across on desktop, 2 on tablets, stacked on phones.
+   Declared after the other breakpoints so the narrowest rule wins — and
+   prefixed with `.home-layout` to match the `.home-layout .categories__grid`
+   rule inside the 1080px block above. Specificity, not order, is what decides
+   between them: as bare `.categories__grid` these two blocks are one class
+   against that rule's two, so they lost at every width below 1080px and the
+   four cards stayed four-across all the way down to a phone (measured at a
+   500px viewport: four columns of 103.75px). Equal specificity now, so source
+   order applies and the narrower rule wins. Keep the prefix on both.
+
+   `min(..., 2)` so a homepage showing a single category gets one column rather
+   than a half-width card with a gap beside it. The cap is doubled to match:
+   with two columns it lands at 940px, which is wider than the container and so
+   changes nothing — two cards fill the row exactly as they always have — and it
+   only bites in the single-card case. */
+@media (max-width: 960px) {
+  .home-layout .categories__grid {
+    grid-template-columns: repeat(min(var(--category-columns, 4), 2), minmax(0, 1fr));
+    max-width: calc(min(var(--category-columns, 4), 2) * 470px);
+  }
+}
+
+@media (max-width: 520px) {
+  .home-layout .categories__grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: none;
+  }
+
+  .home-layout .categories {
+    max-width: 380px;
+    /* The cap is narrower than the column it sits in between roughly 440px and
+       520px of viewport, and without this the whole section hangs off the left
+       edge while the hero, the bento and the questions above and below it stay
+       full width — measured at a 500px viewport as cards ending at 400px
+       against a 465px content edge. Everything else on the page centres itself
+       by being as wide as the column; this one has to say so. */
+    margin-inline: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

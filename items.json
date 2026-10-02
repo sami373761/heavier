@@ -1,0 +1,940 @@
+[
+  {
+    "id": "bandicoot",
+    "weight": 1500,
+    "path": "animals_svg/bandicoot.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Bandicoot",
+      "esp": "Bandicut",
+      "tur": "Bandikut",
+      "fra": "Bandicoot",
+      "deu": "Nasenbeutler"
+    }
+  },
+  {
+    "id": "bat",
+    "weight": 30,
+    "path": "animals_svg/bat.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Bat",
+      "esp": "Murciélago",
+      "tur": "Yarasa",
+      "fra": "Chauve-souris",
+      "deu": "Fledermaus"
+    }
+  },
+  {
+    "id": "bear",
+    "weight": 230000,
+    "path": "animals_svg/bear.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Bear",
+      "esp": "Oso",
+      "tur": "Ayı",
+      "fra": "Ours",
+      "deu": "Bär"
+    }
+  },
+  {
+    "id": "buffalo",
+    "weight": 580000,
+    "path": "animals_svg/buffalo.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Buffalo",
+      "esp": "Búfalo",
+      "tur": "Manda",
+      "fra": "Buffle",
+      "deu": "Büffel"
+    }
+  },
+  {
+    "id": "bull",
+    "weight": 830000,
+    "path": "animals_svg/bull.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Bull",
+      "esp": "Toro",
+      "tur": "Boğa",
+      "fra": "Taureau",
+      "deu": "Stier"
+    }
+  },
+  {
+    "id": "camel",
+    "weight": 550000,
+    "path": "animals_svg/camel.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Camel",
+      "esp": "Camello",
+      "tur": "Deve",
+      "fra": "Chameau",
+      "deu": "Kamel"
+    }
+  },
+  {
+    "id": "capricorn-goat",
+    "weight": 70000,
+    "path": "animals_svg/capricorn-goat.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Capricorn Goat",
+      "esp": "Cabra Capricornio",
+      "tur": "Oğlak Keçisi",
+      "fra": "Chèvre Capricorne",
+      "deu": "Steinbock-Ziege"
+    }
+  },
+  {
+    "id": "chameleon-reptile",
+    "weight": 120,
+    "path": "animals_svg/chameleon-reptile.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Chameleon",
+      "esp": "Camaleón",
+      "tur": "Bukalemun",
+      "fra": "Caméléon",
+      "deu": "Chamäleon"
+    }
+  },
+  {
+    "id": "cow",
+    "weight": 640000,
+    "path": "animals_svg/cow.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Cow",
+      "esp": "Vaca",
+      "tur": "İnek",
+      "fra": "Vache",
+      "deu": "Kuh"
+    }
+  },
+  {
+    "id": "crocodile",
+    "weight": 380000,
+    "path": "animals_svg/crocodile.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Crocodile",
+      "esp": "Cocodrilo",
+      "tur": "Timsah",
+      "fra": "Crocodile",
+      "deu": "Krokodil"
+    }
+  },
+  {
+    "id": "deer",
+    "weight": 68000,
+    "path": "animals_svg/deer.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Deer",
+      "esp": "Ciervo",
+      "tur": "Geyik",
+      "fra": "Cerf",
+      "deu": "Hirsch"
+    }
+  },
+  {
+    "id": "dog",
+    "weight": 20000,
+    "path": "animals_svg/dog.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Dog",
+      "esp": "Perro",
+      "tur": "Köpek",
+      "fra": "Chien",
+      "deu": "Hund"
+    }
+  },
+  {
+    "id": "dolphin",
+    "weight": 270000,
+    "path": "animals_svg/dolphin.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Dolphin",
+      "esp": "Delfín",
+      "tur": "Yunus",
+      "fra": "Dauphin",
+      "deu": "Delfin"
+    }
+  },
+  {
+    "id": "domestic-cat",
+    "weight": 5000,
+    "path": "animals_svg/domestic-cat.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Domestic Cat",
+      "esp": "Gato doméstico",
+      "tur": "Evcil Kedi",
+      "fra": "Chat domestique",
+      "deu": "Hauskatze"
+    }
+  },
+  {
+    "id": "eagle",
+    "weight": 4700,
+    "path": "animals_svg/eagle.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Eagle",
+      "esp": "Águila",
+      "tur": "Kartal",
+      "fra": "Aigle",
+      "deu": "Adler"
+    }
+  },
+  {
+    "id": "elephant",
+    "weight": 4500000,
+    "path": "animals_svg/elephant.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Elephant",
+      "esp": "Elefante",
+      "tur": "Fil",
+      "fra": "Éléphant",
+      "deu": "Elefant"
+    }
+  },
+  {
+    "id": "flamingo",
+    "weight": 2700,
+    "path": "animals_svg/flamingo.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Flamingo",
+      "esp": "Flamenco",
+      "tur": "Flamingo",
+      "fra": "Flamant rose",
+      "deu": "Flamingo"
+    }
+  },
+  {
+    "id": "fox",
+    "weight": 6500,
+    "path": "animals_svg/fox.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Fox",
+      "esp": "Zorro",
+      "tur": "Tilki",
+      "fra": "Renard",
+      "deu": "Fuchs"
+    }
+  },
+  {
+    "id": "frog",
+    "weight": 40,
+    "path": "animals_svg/frog.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Frog",
+      "esp": "Rana",
+      "tur": "Kurbağa",
+      "fra": "Grenouille",
+      "deu": "Frosch"
+    }
+  },
+  {
+    "id": "gazelle",
+    "weight": 22000,
+    "path": "animals_svg/gazelle.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Gazelle",
+      "esp": "Gacela",
+      "tur": "Ceylan",
+      "fra": "Gazelle",
+      "deu": "Gazelle"
+    }
+  },
+  {
+    "id": "giraffe",
+    "weight": 1100000,
+    "path": "animals_svg/giraffe.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Giraffe",
+      "esp": "Jirafa",
+      "tur": "Zürafa",
+      "fra": "Girafe",
+      "deu": "Giraffe"
+    }
+  },
+  {
+    "id": "gorilla",
+    "weight": 170000,
+    "path": "animals_svg/gorilla.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Gorilla",
+      "esp": "Gorila",
+      "tur": "Goril",
+      "fra": "Gorille",
+      "deu": "Gorilla"
+    }
+  },
+  {
+    "id": "horse",
+    "weight": 500000,
+    "path": "animals_svg/horse.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Horse",
+      "esp": "Caballo",
+      "tur": "At",
+      "fra": "Cheval",
+      "deu": "Pferd"
+    }
+  },
+  {
+    "id": "kangaroo",
+    "weight": 57000,
+    "path": "animals_svg/kangaroo.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Kangaroo",
+      "esp": "Canguro",
+      "tur": "Kanguru",
+      "fra": "Kangourou",
+      "deu": "Känguru"
+    }
+  },
+  {
+    "id": "lamb",
+    "weight": 22000,
+    "path": "animals_svg/lamb.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Lamb",
+      "esp": "Cordero",
+      "tur": "Kuzu",
+      "fra": "Agneau",
+      "deu": "Lamm"
+    }
+  },
+  {
+    "id": "lion",
+    "weight": 180000,
+    "path": "animals_svg/lion.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Lion",
+      "esp": "León",
+      "tur": "Aslan",
+      "fra": "Lion",
+      "deu": "Löwe"
+    }
+  },
+  {
+    "id": "monkey",
+    "weight": 7300,
+    "path": "animals_svg/monkey.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Monkey",
+      "esp": "Mono",
+      "tur": "Maymun",
+      "fra": "Singe",
+      "deu": "Affe"
+    }
+  },
+  {
+    "id": "moose",
+    "weight": 490000,
+    "path": "animals_svg/moose.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Moose",
+      "esp": "Alce",
+      "tur": "Sığın",
+      "fra": "Élan",
+      "deu": "Elch"
+    }
+  },
+  {
+    "id": "mouse",
+    "weight": 50,
+    "path": "animals_svg/mouse.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Mouse",
+      "esp": "Ratón",
+      "tur": "Fare",
+      "fra": "Souris",
+      "deu": "Maus"
+    }
+  },
+  {
+    "id": "narwhal",
+    "weight": 1200000,
+    "path": "animals_svg/narwhal.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Narwhal",
+      "esp": "Narval",
+      "tur": "Narval",
+      "fra": "Narval",
+      "deu": "Narwal"
+    }
+  },
+  {
+    "id": "octopus",
+    "weight": 5800,
+    "path": "animals_svg/octopus.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Octopus",
+      "esp": "Pulpo",
+      "tur": "Ahtapot",
+      "fra": "Poulpe",
+      "deu": "Oktopus"
+    }
+  },
+  {
+    "id": "owl-bird",
+    "weight": 800,
+    "path": "animals_svg/owl-bird.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Owl",
+      "esp": "Búho",
+      "tur": "Baykuş",
+      "fra": "Hibou",
+      "deu": "Eule"
+    }
+  },
+  {
+    "id": "panther",
+    "weight": 55000,
+    "path": "animals_svg/panther.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Panther",
+      "esp": "Pantera",
+      "tur": "Panter",
+      "fra": "Panthère",
+      "deu": "Panther"
+    }
+  },
+  {
+    "id": "penguin",
+    "weight": 10000,
+    "path": "animals_svg/penguin.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Penguin",
+      "esp": "Pingüino",
+      "tur": "Penguen",
+      "fra": "Manchot",
+      "deu": "Pinguin"
+    }
+  },
+  {
+    "id": "pig",
+    "weight": 100000,
+    "path": "animals_svg/pig.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Pig",
+      "esp": "Cerdo",
+      "tur": "Domuz",
+      "fra": "Cochon",
+      "deu": "Schwein"
+    }
+  },
+  {
+    "id": "pigeon",
+    "weight": 330,
+    "path": "animals_svg/pigeon.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Pigeon",
+      "esp": "Paloma",
+      "tur": "Güvercin",
+      "fra": "Pigeon",
+      "deu": "Taube"
+    }
+  },
+  {
+    "id": "rabbit",
+    "weight": 2200,
+    "path": "animals_svg/rabbit.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Rabbit",
+      "esp": "Conejo",
+      "tur": "Tavşan",
+      "fra": "Lapin",
+      "deu": "Kaninchen"
+    }
+  },
+  {
+    "id": "rhino",
+    "weight": 2000000,
+    "path": "animals_svg/rhino.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Rhino",
+      "esp": "Rinoceronte",
+      "tur": "Gergedan",
+      "fra": "Rhinocéros",
+      "deu": "Nashorn"
+    }
+  },
+  {
+    "id": "sea-lion",
+    "weight": 240000,
+    "path": "animals_svg/sea-lion.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Sea Lion",
+      "esp": "León marino",
+      "tur": "Deniz Aslanı",
+      "fra": "Otarie",
+      "deu": "Seelöwe"
+    }
+  },
+  {
+    "id": "seahorse",
+    "weight": 20,
+    "path": "animals_svg/seahorse.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Seahorse",
+      "esp": "Caballito de mar",
+      "tur": "Denizatı",
+      "fra": "Hippocampe",
+      "deu": "Seepferdchen"
+    }
+  },
+  {
+    "id": "great-white-shark",
+    "weight": 600000,
+    "path": "animals_svg/great-white-shark.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Great White Shark",
+      "esp": "Gran tiburón blanco",
+      "tur": "Büyük Beyaz Köpekbalığı",
+      "fra": "Grand requin blanc",
+      "deu": "Weißer Hai"
+    }
+  },
+  {
+    "id": "sheep",
+    "weight": 73000,
+    "path": "animals_svg/sheep.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Sheep",
+      "esp": "Oveja",
+      "tur": "Koyun",
+      "fra": "Mouton",
+      "deu": "Schaf"
+    }
+  },
+  {
+    "id": "snake",
+    "weight": 8000,
+    "path": "animals_svg/snake.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Snake",
+      "esp": "Serpiente",
+      "tur": "Yılan",
+      "fra": "Serpent",
+      "deu": "Schlange"
+    }
+  },
+  {
+    "id": "sperm-whale",
+    "weight": 40000000,
+    "path": "animals_svg/sperm-whale.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Sperm Whale",
+      "esp": "Cachalote",
+      "tur": "Ispermeçet Balinası",
+      "fra": "Cachalot",
+      "deu": "Pottwal"
+    }
+  },
+  {
+    "id": "squid-animal",
+    "weight": 1800,
+    "path": "animals_svg/squid-animal.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Squid",
+      "esp": "Calamar",
+      "tur": "Kalamar",
+      "fra": "Calmar",
+      "deu": "Kalmar"
+    }
+  },
+  {
+    "id": "tapir",
+    "weight": 240000,
+    "path": "animals_svg/tapir.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Tapir",
+      "esp": "Tapir",
+      "tur": "Tapir",
+      "fra": "Tapir",
+      "deu": "Tapir"
+    }
+  },
+  {
+    "id": "turkey",
+    "weight": 7900,
+    "path": "animals_svg/turkey.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Turkey",
+      "esp": "Pavo",
+      "tur": "Hindi",
+      "fra": "Dinde",
+      "deu": "Truthahn"
+    }
+  },
+  {
+    "id": "turtle",
+    "weight": 1500,
+    "path": "animals_svg/turtle.svg",
+    "category": "animal",
+    "include_random": true,
+    "names": {
+      "eng": "Turtle",
+      "esp": "Tortuga",
+      "tur": "Kaplumbağa",
+      "fra": "Tortue",
+      "deu": "Schildkröte"
+    }
+  },
+  {
+    "id": "cherry",
+    "weight": 10,
+    "path": "foods_svg/cherry.svg",
+    "category": "food",
+    "include_random": true,
+    "names": {
+      "eng": "Cherry",
+      "esp": "Cereza",
+      "tur": "Kiraz",
+      "fra": "Cerise",
+      "deu": "Kirsche"
+    }
+  },
+  {
+    "id": "corn",
+    "weight": 220,
+    "path": "foods_svg/corn.svg",
+    "category": "food",
+    "include_random": true,
+    "names": {
+      "eng": "Corn",
+      "esp": "Maíz",
+      "tur": "Mısır",
+      "fra": "Maïs",
+      "deu": "Mais"
+    }
+  },
+  {
+    "id": "courgette-marrow",
+    "weight": 230,
+    "path": "foods_svg/courgette-marrow.svg",
+    "category": "food",
+    "include_random": true,
+    "names": {
+      "eng": "Courgette",
+      "esp": "Calabacín",
+      "tur": "Kabak",
+      "fra": "Courgette",
+      "deu": "Zucchini"
+    }
+  },
+  {
+    "id": "eggplant",
+    "weight": 340,
+    "path": "foods_svg/eggplant.svg",
+    "category": "food",
+    "include_random": true,
+    "names": {
+      "eng": "Eggplant",
+      "esp": "Berenjena",
+      "tur": "Patlıcan",
+      "fra": "Aubergine",
+      "deu": "Aubergine"
+    }
+  },
+  {
+    "id": "pear",
+    "weight": 180,
+    "path": "foods_svg/pear.svg",
+    "category": "food",
+    "include_random": true,
+    "names": {
+      "eng": "Pear",
+      "esp": "Pera",
+      "tur": "Armut",
+      "fra": "Poire",
+      "deu": "Birne"
+    }
+  },
+  {
+    "id": "pineapple",
+    "weight": 1300,
+    "path": "foods_svg/pineapple.svg",
+    "category": "food",
+    "include_random": true,
+    "names": {
+      "eng": "Pineapple",
+      "esp": "Piña",
+      "tur": "Ananas",
+      "fra": "Ananas",
+      "deu": "Ananas"
+    }
+  },
+  {
+    "id": "pumpkin",
+    "weight": 7000,
+    "path": "foods_svg/pumpkin.svg",
+    "category": "food",
+    "include_random": true,
+    "names": {
+      "eng": "Pumpkin",
+      "esp": "Calabaza",
+      "tur": "Balkabağı",
+      "fra": "Citrouille",
+      "deu": "Kürbis"
+    }
+  },
+  {
+    "id": "anvil",
+    "weight": 50000,
+    "path": "stuff_svg/anvil.svg",
+    "category": "stuff",
+    "include_random": true,
+    "names": {
+      "eng": "Anvil",
+      "esp": "Yunque",
+      "tur": "Örs",
+      "fra": "Enclume",
+      "deu": "Amboss"
+    }
+  },
+  {
+    "id": "bed-lamp",
+    "weight": 1200,
+    "path": "stuff_svg/bed-lamp.svg",
+    "category": "stuff",
+    "include_random": true,
+    "names": {
+      "eng": "Bed Lamp",
+      "esp": "Lámpara de cama",
+      "tur": "Yatak Lambası",
+      "fra": "Lampe de chevet",
+      "deu": "Nachttischlampe"
+    }
+  },
+  {
+    "id": "bowling-ball",
+    "weight": 5400,
+    "path": "stuff_svg/bowling-ball.svg",
+    "category": "stuff",
+    "include_random": true,
+    "names": {
+      "eng": "Bowling Ball",
+      "esp": "Bola de bolos",
+      "tur": "Bowling Topu",
+      "fra": "Boule de bowling",
+      "deu": "Bowlingkugel"
+    }
+  },
+  {
+    "id": "cooking-pot",
+    "weight": 1800,
+    "path": "stuff_svg/cooking-pot.svg",
+    "category": "stuff",
+    "include_random": true,
+    "names": {
+      "eng": "Cooking Pot",
+      "esp": "Olla",
+      "tur": "Tencere",
+      "fra": "Casserole",
+      "deu": "Kochtopf"
+    }
+  },
+  {
+    "id": "fire-extinguisher",
+    "weight": 9500,
+    "path": "stuff_svg/fire-extinguisher.svg",
+    "category": "stuff",
+    "include_random": true,
+    "names": {
+      "eng": "Fire Extinguisher",
+      "esp": "Extintor",
+      "tur": "Yangın Söndürme Tüpü",
+      "fra": "Extincteur",
+      "deu": "Feuerlöscher"
+    }
+  },
+  {
+    "id": "umbrella",
+    "weight": 450,
+    "path": "stuff_svg/umbrella.svg",
+    "category": "stuff",
+    "include_random": true,
+    "names": {
+      "eng": "Umbrella",
+      "esp": "Paraguas",
+      "tur": "Şemsiye",
+      "fra": "Parapluie",
+      "deu": "Regenschirm"
+    }
+  },
+  {
+    "id": "attack-helicopter",
+    "weight": 5200000,
+    "path": "vehicle_svg/attack-helicopter.svg",
+    "category": "vehicle",
+    "include_random": true,
+    "names": {
+      "eng": "Attack Helicopter",
+      "esp": "Helicóptero de ataque",
+      "tur": "Saldırı Helikopteri",
+      "fra": "Hélicoptère d'attaque",
+      "deu": "Kampfhubschrauber"
+    }
+  },
+  {
+    "id": "bicycle",
+    "weight": 14000,
+    "path": "vehicle_svg/bicycle.svg",
+    "category": "vehicle",
+    "include_random": true,
+    "names": {
+      "eng": "Bicycle",
+      "esp": "Bicicleta",
+      "tur": "Bisiklet",
+      "fra": "Vélo",
+      "deu": "Fahrrad"
+    }
+  },
+  {
+    "id": "car",
+    "weight": 1500000,
+    "path": "vehicle_svg/car.svg",
+    "category": "vehicle",
+    "include_random": true,
+    "names": {
+      "eng": "Car",
+      "esp": "Coche",
+      "tur": "Araba",
+      "fra": "Voiture",
+      "deu": "Auto"
+    }
+  },
+  {
+    "id": "jet-ski",
+    "weight": 320000,
+    "path": "vehicle_svg/jet-ski.svg",
+    "category": "vehicle",
+    "include_random": true,
+    "names": {
+      "eng": "Jet Ski",
+      "esp": "Moto acuática",
+      "tur": "Jet Ski",
+      "fra": "Jet-ski",
+      "deu": "Jetski"
+    }
+  },
+  {
+    "id": "scooter-motorcycle",
+    "weight": 130000,
+    "path": "vehicle_svg/scooter-motorcycle.svg",
+    "category": "vehicle",
+    "include_random": true,
+    "names": {
+      "eng": "Scooter",
+      "esp": "Scooter",
+      "tur": "Skuter",
+      "fra": "Scooter",
+      "deu": "Motorroller"
+    }
+  },
+  {
+    "id": "zeppelin",
+    "weight": 8000000,
+    "path": "vehicle_svg/zeppelin.svg",
+    "category": "vehicle",
+    "include_random": true,
+    "names": {
+      "eng": "Zeppelin",
+      "esp": "Zepelín",
+      "tur": "Zeplin",
+      "fra": "Zeppelin",
+      "deu": "Zeppelin"
+    }
+  }
+]
